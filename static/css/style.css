@@ -7,3 +7,13 @@ form.login_form {
     border-radius: 5px;
     padding: 10px;
 }
+
+h4 {
+color:purple;
+padding:20px;
+}
+
+p{
+color:blue;
+font_size:14pt;
+}
