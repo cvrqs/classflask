@@ -12,7 +12,16 @@ def prepare(title):
 @app.route('/training/<prof>')
 def training(prof):
     return render_template('training.html', prof=prof)
-print("1")
+
+@app.route('/list_prof/<flag>')
+def prop(flag):
+    proflist = ['инженер-исследователь', 'пилот', 'строитель', 'экзобиолог', 'врач',
+                   'инженер по терраформированию', 'климатолог',
+                   'специалист по радиационной защите', 'астрогеолог', 'гляциолог',
+                   'инженер жизнеобеспечения', 'метеоролог', 'оператор марсохода', 'киберинженер',
+                   'штурман', 'пилот дронов']
+
+    return render_template('works.html', flag=flag, proflist=proflist)
 
 if __name__ == '__main__':
     app.run(port=8080, host='127.0.0.1')
