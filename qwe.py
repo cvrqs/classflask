@@ -1,39 +1,57 @@
-from flask import Flask, url_for, request, render_template
+import argparse
+import sys
+import requests
+import json
 
-app = Flask(__name__)
+parser = argparse.ArgumentParser()
 
+parser.add_argument('host', metavar='host', nargs='?',
+                    type=str)
 
-@app.route('/<title>')
-@app.route('/index/<title>')
-def prepare(title):
-    user = "Ученик Яндекс.Лицея"
-    return render_template('base.html', title=title)
+parser.add_argument('port', metavar='port', nargs='?',
+                    type=str)
 
+parser.add_argument('dates', metavar='dates', nargs='+',
+                    type=str)
 
-@app.route('/training/<prof>')
-def training(prof):
-    return render_template('training.html', prof=prof)
+parser.add_argument('--coeff', metavar='coeff', nargs='?',
+                    type=int, default=2, help='любитель кукл')
 
+parser.add_argument('--subtract', metavar='subtract', nargs='?',
+                    type=int, default=[], help='любитель кукл')
 
-@app.route('/list_prof/<flag>')
-def prop(flag):
-    proflist = ['инженер-исследователь', 'пилот', 'строитель', 'экзобиолог', 'врач',
-                'инженер по терраформированию', 'климатолог',
-                'специалист по радиационной защите', 'астрогеолог', 'гляциолог',
-                'инженер жизнеобеспечения', 'метеоролог', 'оператор марсохода', 'киберинженер',
-                'штурман', 'пилот дронов']
+args = parser.parse_args()
 
-    return render_template('works.html', flag=flag, proflist=proflist)
+host = args.host
+port = args.port
+dates = args.dates
+print(dates)
 
+coeff = args.coeff
 
-@app.route('/answer')
-@app.route('/auto_answer')
-def answers():
-    data = {'title': 'Анкета', 'surname': 'Васильев', 'name': 'Дима', 'education': 'высшее', 'profession': 'Космонавт',
-            'sex': 'мужской', 'motivation': 'всегда мечтал покушать картошки с Марса', 'ready': 'готов'}
-
-    return render_template('auto_answer.html', **data)
+def get_api(server, port):
+    sp = []
 
 
-if __name__ == '__main__':
-    app.run(port=8080, host='127.0.0.1')
+    url = f"http://{server}:{port}"
+
+    response = requests.get(url)
+    json_answer = response.json()
+    print(json_answer)
+    if coeff:
+
+        for i in range(len(dates)):
+            c = 0
+            if dates[i] in json_answer:
+
+                for j in json_answer[dates[i]]:
+
+                    if j % 2 != 0:
+                        j *= coeff
+                        c += j
+                    else:
+                        c += j
+            sp.append(c)
+    print(c)
+
+get_api(host, port)
