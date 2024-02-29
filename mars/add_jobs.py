@@ -7,10 +7,10 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = 'yandexlyceum_secret_key'
 db_session.global_init("db/blogs.db")
 job = Jobs()
-job.team_leader = 1
-job.job = 'deployment of residential modules 1 and 2'
-job.work_size = 15
-job.collaborators = '2, 3'
+job.team_leader = 3
+job.job = 'Посадить деревья'
+job.work_size = 10
+job.collaborators = '1, 2, 3'
 job.is_finished = False
 db_sess = db_session.create_session()
 db_sess.add(job)

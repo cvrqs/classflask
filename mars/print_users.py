@@ -11,5 +11,6 @@ db_session.global_init(bd_name)
 
 db_sess = db_session.create_session()
 
-for user in db_sess.query(User).filter(User.address == 'module_1').all():
-    print(user)
+for user in db_sess.query(User).filter(User.address == 'module_1', User.position.notilike("%engineer%"),
+                                       User.speciality.notilike("%engineer%")).all():
+    print(user.id)
